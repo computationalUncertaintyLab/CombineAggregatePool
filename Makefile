@@ -34,6 +34,10 @@ score_ensemble:
 	cd ./score_ensemble_models && $(PYTHON) brier_threshold.py
 	cd ./score_ensemble_models && $(PYTHON) combine_brier_scores.py
 
+
+download_analysis_data:
+	cd ./analysisdata && $(PYTHON) ./analysisdata/download_data.py
+
 build_fig_1:
 	cd viz/Fig1 && $(PYTHON) compute_average_pairwise_KL.py
 	cd viz/Fig1 && $(PYTHON) variance_reduction.py
@@ -53,4 +57,7 @@ build_fig_5:
 	cd viz/Fig5 && $(PYTHON) produce_dataset_of_scores.py
 	cd viz/Fig5 && $(PYTHON) PIT_DATA.py
 	cd viz/Fig5 && $(PYTHON) plot.py
+
+build_fig_6:
+	cd viz/Fig6 && $(PYTHON) plot.py
 
