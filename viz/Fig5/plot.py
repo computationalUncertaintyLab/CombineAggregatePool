@@ -18,20 +18,8 @@ def stamp(ax,s):
 
 if __name__ == "__main__":
 
-    # d = pd.read_csv("../../score_ensemble_models/all_scores.csv")
-    # d = d.loc[ d["static_plus"] == 0 ]
-
     model2name = {-1:"Equal",-2:"Static",-3:"Adapt",320:"CAP Equal", 321:"CAP Adapt"}
-    
-    # most_recent = d.groupby(["Location","Target","compute_model_id","MW_forecast_week"]).apply( lambda x: x.sort_values(["releaseEW"]).iloc[-1] ).reset_index(drop=True)
-
-    # d = most_recent.loc[ most_recent.compute_model_id.isin([-1,-2,-3,320,321])]
-
-    # d["compute_model_id"] = d.compute_model_id.replace(model2name)
-    # d["logscore"] = np.clip(d.logscore, -10, np.inf)
-
-    # d.to_csv("./dataset.csv",index=False)
-    
+   
     d = pd.read_csv("./dataset.csv")
 
     d["ensemble_type"]  = d.compute_model_id.replace({"Adapt":"Adapt"   ,"CAP Adapt":"Adapt","Equal":"Equal","CAP Equal":"Equal"})
@@ -52,7 +40,6 @@ if __name__ == "__main__":
     solidcolor=["blue","darkgoldenrod"]
     xpoint=0
 
-    
     for ens_n,(ens_type) in enumerate(["Equal","Adapt"]):
         subset_ens = d.loc[d.ensemble_type==ens_type]
 
@@ -116,14 +103,8 @@ if __name__ == "__main__":
     g = sns.lineplot( x ="right", y="px"
                      , style   = "ensemble_type"
                      , hue = "algorithm_type"
-                     #, col   = "Target"
-                     #, row   = "ensemble_type"
                      , data  = subset
                       ,palette= sns.color_palette("tab10",2)
-                     #, kind="line"
-                     #, hue_order = ["Original Alg.","Plus Alg."]
-                     #, row_order = ["Equal","Static","Adaptive"]
-                     #, label = "compute_model_id"
                      , alpha=0.80
                      ,ax=ax
                      , lw=1
@@ -139,8 +120,6 @@ if __name__ == "__main__":
     ax.tick_params(which="both",labelsize=8)
 
     ax.set_title("")
-            #ax.text(0.01,0.99,s="{:d} wk ahead".format(n+1),fontsize=10
-            #        ,ha="left",va="top",transform=ax.transAxes)
 
     ax.set_ylabel("Cumul. Prob", fontsize=8)
     ax.set_xlabel("Prob. Int. Transf.",fontsize=8)
@@ -180,69 +159,7 @@ if __name__ == "__main__":
     stamp(ax,"C.")
     
     #---------------------------------------------------------------
-
-    
-    #--Over time----------------------------------------------------
-    # ax = fig.add_subplot(spec[1, :])
-
-    # d = pd.read_csv("./dataset.csv")
-
-    # epidata = pd.read_csv("../../analysisdata/epidataFormated.csv.gz")
-    # epidata = epidata.groupby(["EW","Location"]).apply(lambda x: x.sort_values("releaseEW").iloc[-1] ).reset_index(drop=True)
-    
-    # seasons = pd.read_csv("../../analysisdata/EWsandSeasons.csv")
-    # epidata = epidata.merge(seasons,on=["EW"], how="left")
-    
-    # d = d.merge(seasons, left_on = ["EW_target_week"], right_on=["EW"], indicator="I", how="outer")
-    # d = d.loc[d.I=="both"]
-    
-    # def find_peak(x):
-
-    #     peak_week = np.argmax(x.wili.values)
-
-    #     mws = x["MW"].values
-
-    #     max_mw = np.max(mws)
-    #     min_mw = np.min(mws)
-        
-    #     peak  = mws[peak_week]
-    #     #weeks = np.clip( mws[peak_week-2:peak_week+2], min_mw, max_mw  )
-    #     return pd.Series({"peak_week":peak})
-    
-    # peaks = epidata.groupby(["Season","Location"]).apply(find_peak).reset_index()
-    # peaks = peaks.drop_duplicates()
-
-    # d = d.merge( peaks, left_on = ["Location","Season"],right_on = ["Location","Season"])
-
-    # d["peak_times"] = d["MW_target_week"] - d["peak_week"]
-
-    # def starts(x):
-    #     x["start"] = np.arange(len(x))
-    #     return x
-    # d = d.groupby(["Location","Season","Target","compute_model_id"]).apply(starts)
-
-    # d = d.loc[d.compute_model_id.isin(["Equal","Adapt","CAP Equal","CAP Adapt"])]
-
-    # d = d.loc[d.Target==1] #--Now cast
-
-    # d["ensemble_type"]  = d.compute_model_id.replace({"Adapt":"Adapt"   ,"CAP Adapt":"Adapt","Equal":"Equal","CAP Equal":"Equal"})
-    # d["algorithm_type"] = d.compute_model_id.replace({"Adapt":"Original","CAP Adapt":"CAP","Equal":"Original","CAP Equal":"CAP"})
-
-    # sns.lineplot(  x    ="start"
-    #              , y    ="logscore"
-    #              , hue  ="algorithm_type"
-    #              , style="ensemble_type" 
-    #              , data =d
-    #              , estimator =np.mean
-    #              , errorbar=("se", 2)
-    #              , err_kws={"alpha": .2})
-    # ax.set_xlabel("Epidemic week",fontsize=8)
-    # ax.set_ylabel("Log score (Nowcast)",fontsize=8)
-
-    # ax.set_ylim(-6,-2)
-    
-    # #---------------------------------------------------------------
-
+   #---------------------------------------------------------------
     
     #--By PEAK----------------------------------------------------
     ax = fig.add_subplot(spec[1, :])
@@ -268,7 +185,6 @@ if __name__ == "__main__":
         min_mw = np.min(mws)
         
         peak  = mws[peak_week]
-        #weeks = np.clip( mws[peak_week-2:peak_week+2], min_mw, max_mw  )
         return pd.Series({"peak_week":peak})
     
     peaks = epidata.groupby(["Season","Location"]).apply(find_peak).reset_index()
@@ -289,7 +205,7 @@ if __name__ == "__main__":
 
     d["ensemble_type"]  = d.compute_model_id.replace({"Adapt":"Adapt"   ,"CAP Adapt":"Adapt","Equal":"Equal","CAP Equal":"Equal"})
     d["algorithm_type"] = d.compute_model_id.replace({"Adapt":"Original","CAP Adapt":"CAP","Equal":"Original","CAP Equal":"CAP"})
-    
+
     sns.lineplot(  x    ="peak_times"
                  , y    ="logscore"
                  , hue  ="algorithm_type"
@@ -318,8 +234,19 @@ if __name__ == "__main__":
         
     
     
+    #--STATS for manuscript
+    d = d.reset_index(drop=True)
+
+    at_peak    = d.loc[d.peak_times==0]
+    ten_before = d.loc[d.peak_times==-10]
+    ten_after  = d.loc[d.peak_times==10]
+
+    at_peak.groupby(["ensemble_type","algorithm_type"]).apply( lambda x: x.logscore.mean() )
+    
 
 
+
+    
 
 
 
