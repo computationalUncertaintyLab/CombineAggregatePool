@@ -1,8 +1,8 @@
 # Combine Aggregate Pool (CAP) Ensemble 
 
-**Ningxi Wei,1 Xinze Zhou,1 Wei-Min Huang,1 and Thomas McAndrew2**
-**1 Department of Mathematics, College of Arts and Science, Lehigh University, Bethlehem, Pennsylvania, United States of America**
-**2 Department of Community and Population health, College of Health, Lehigh University, Bethlehem, Pennsylvania, United States of America**
+Ningxi Wei,1 Xinze Zhou,1 Wei-Min Huang,1 and Thomas McAndrew2
+1 Department of Mathematics, College of Arts and Science, Lehigh University, Bethlehem, Pennsylvania, United States of America
+2 Department of Community and Population health, College of Health, Lehigh University, Bethlehem, Pennsylvania, United States of America
 
 ### Tutorial 
 A tutorial of the exact CAP algporithm that was implemented in the above manuscript can be viewed as a notebook at notebook/tutorial.ipynb. 
